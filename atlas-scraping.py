@@ -340,8 +340,12 @@ def run(wervers):
     login_urls = [url, svhk_login_url]
     urls = [werver_url, werver_url_svhk]
     names = ["Algemeen", "SVHK"]
-    dates = get_dates()
-
+    # dates = get_dates()
+    dates = {
+        'selectedMonth': '02',
+        'selectedYear': 2022,
+        'backup': 'False',
+    }
     month = dates['selectedMonth']
     year = dates['selectedYear']
                 
@@ -425,6 +429,9 @@ def run(wervers):
         #     print('Failed to upload to spreadsheets !')
 
         df.insert(0,"Nr.",new)
+        gob2 = df.pop('GOB')
+        df.insert(2,'GOB',gob2)
+        print(f'df: \n {df}')
 
         try:
             if dates['backup'] == 'True':

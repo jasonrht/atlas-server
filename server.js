@@ -24,7 +24,7 @@ console.log('Connected to MongoDB client.')
 async function main() {
     try {
         app.get('/refresh-data', (req, res) => {
-            const python = spawn('python', ['atlas-scraping.py'])
+            const python = spawn('python3', ['./atlas-scraping.py'])
             let dataToSend;
             python.stdout.on('data', function (data) {
                 console.log('listening for output ...')
