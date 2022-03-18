@@ -1,8 +1,9 @@
 const axios = require('axios')
 
-axios.get('http://localhost:3001/data').then((err, res) => {
-    if(err) {
-        console.log(err)
-    }
-    console.log(res)
-})
+const main = async () => {
+    const response = await axios.get('http://localhost:3001/getDates')
+    const date = new Date()
+    console.log(response)
+}
+
+main()

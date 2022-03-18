@@ -26,11 +26,12 @@ const atlas = async (werverList) => {
         return b[sortVariable] - a[sortVariable]
     })
     allData.forEach(werver => {
-        werver['GOB'] = '€ '.concat(werver['GOB'].toFixed(2)).replace('.',',')
         werver['TOB'] = '€ '.concat(werver['TOB'].toFixed(2)).replace('.',',')
         werver['GIB'] = '€ '.concat(werver['GIB'].toFixed(2)).replace('.',',')
+        werver['GOB'] = '€ '.concat(werver['GOB'].toFixed(2)).replace('.',',')
         werver['Uitval'] = (100*werver['Uitval']).toFixed(2).toString().concat(' %').replace('.',',')
     })
+    console.log(allData)
     return allData
 }
 
