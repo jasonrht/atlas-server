@@ -273,7 +273,7 @@ def to_spreadsheet(df,corner,wks):
 	# sheet.batch_clear("")
 
 def new_index(df):
-    tobs = df.loc[:,"TOB"].values
+    tobs = df.loc[:,"GOB"].values
     prev_tob = tobs[0]
     new = [1]
     # df.set_index("Naam", inplace=True)
@@ -342,7 +342,7 @@ def run(wervers):
     names = ["Algemeen", "SVHK"]
     # dates = get_dates()
     dates = {
-        'selectedMonth': '02',
+        'selectedMonth': '03',
         'selectedYear': 2022,
         'backup': 'False',
     }
@@ -383,54 +383,56 @@ def run(wervers):
 
         apex_df = apex_data(df)
 
-        papyrus_wervers = ["Jelle van Eck","Oscar Martinez","Boris Ruijtenbeek",
+        papyrus_wervers = ["Jelle van Eck","Boris Ruijtenbeek",
                             "Arjan Noordermeer"]
         papyrus_df = poule_data(papyrus_wervers,"papyrus_data", df)
 
         hermes_wervers = ["Brett Taument","Quentin Booi","Luke Hermes","Luuc Marchand","Ian Hermes"]
         hermes_df = poule_data(hermes_wervers,"hermes_data", df)
 
-        swennen_wervers = ["Rosa de Kiefte","Wijnand Hoofs","Owen Maas","David Migo","Simon Knotnerus","Jethro Swennen","Luc van der Vorm",
+        swennen_wervers = ["Rosa de Kiefte""Owen Maas","Simon Knotnerus","Jethro Swennen","Luc van der Vorm",
                             "Boy Rath"]
         swennen_df = poule_data(swennen_wervers,"swennen_data", df)
 
         izzy_wervers = ["Ismael El Hamouchi","Willemijn Renzen",'Charlotte Lagas']
         izzy_df = poule_data(izzy_wervers,"izzy_data",df)
 
-        sp = ["Abdi Ali","Arjan Noordermeer","Britt Gruntjes","Camille Montoux","Carl Hendriks",""
-            "Eefje Groot Koerkamp","Mathis Montoux","Moos Minkes","Owen Maas",
-            "Rick Kerkhoven","Ted Hulshof","Thijs Bakker","Tim Chibanov",
-            "Wijnand Hoofs","Willemijn Renzen","Wouter Wissema","Max Scholsberg",
-            "Ismael El Hamouchi","Jethro Swennen","Ferry Biesheuvel","Luke Hermes","Jelle van Eck","Luc van der Vorm"]
+        sp = ["Abdi Ali","Arjan Noordermeer","Britt Gruntjes","Camille Montoux","Carl Hendriks","Mathis Montoux","Moos Minkes","Owen Maas",
+            "Rick Kerkhoven","Thijs Bakker","Tim Chibanov","Willemijn Renzen","Wouter Wissema","Max Scholsberg",
+            "Ismael El Hamouchi","Simon Knotnerus","Jethro Swennen","Ferry Biesheuvel","Luke Hermes","Jelle van Eck","Luc van der Vorm"]
         sp_df = poule_data(sp, "sp_data", df)
 
-        promotors = ["Oscar Martinez","Rosa de Kiefte","Simon Knotnerus"]
+        promotors = ["Rosa de Kiefte","Brett Taument",
+            "Charlotte Lagas"]
         promotors_df = poule_data(promotors, "promotor_data", df)
 
-        st = ["Brett Taument","David Migo","Giovanni Melissant",
-            "Joep Koolen", "Luuc Marchand","Quentin Booi","Tommie Schotema",
-            "Charlotte Lagas","Boy Rath"]
+        st = ["Giovanni Melissant","Josephine Lagas",
+            "Joep Koolen", "Luuc Marchand","Quentin Booi","Tommie Schotema","Boy Rath","Grace van Houwelingen"]
         st_df = poule_data(st, "st_data", df)
 
-        # try:
-        #     print('Uploading data to google spreadsheets ...')
-        #     to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
-        #     to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
-        #     to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
-        #     to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
-        #     to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
-        #     to_spreadsheet(sp_df,"B3","Leaderboard februari 2022")
-        #     to_spreadsheet(promotors_df,"B30","Leaderboard februari 2022")
-        #     to_spreadsheet(st_df,"B37","Leaderboard februari 2022")
+        try:
+            print('Uploading data to google spreadsheets ...')
+            to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
+            to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
+            to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
+            to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
+            to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
+            to_spreadsheet(sp_df,"B3","Leaderboard maart 2022")
+            to_spreadsheet(promotors_df,"B28","Leaderboard maart 2022")
+            to_spreadsheet(st_df,"B35","Leaderboard maart 2022")
 
-        #     print("Data upload to spreadsheet succes !")
-        # except Exception as e:
-        #     print(e)
-        #     print('Failed to upload to spreadsheets !')
+            print("Data upload to spreadsheet success !")
+        except Exception as e:
+            print(e)
+            print('Failed to upload to spreadsheets !')
 
         df.insert(0,"Nr.",new)
         gob2 = df.pop('GOB')
         df.insert(2,'GOB',gob2)
+        df.sort_values(by='GOB', ascending=False, inplace=True)
+        index = new_index(df)
+        df.set_index(pd.Index(index),inplace=True)
+
         print(f'df: \n {df}')
 
         try:
@@ -462,7 +464,7 @@ def run(wervers):
         #     print('Email sent successfully !')
         # except Exception as e:
         #     print(e)
-        #     print('Failed to send email !')
+        #     print('Failed to send email !')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         return data
     except Exception:
         print(traceback.format_exc())
@@ -475,9 +477,11 @@ wervers = ["Oscar Martinez","Eefje Groot Koerkamp","Rosa de Kiefte","Ali Khaldi"
             "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
             "Simon Knotnerus","Ted Hulshof","Thijs Bakker","Tim Chibanov",
             "Willemijn Renzen","Wijnand Hoofs","Wouter Wissema","Ferry Biesheuvel","Luc van der Vorm",
-            "Moos Minkes", "Carl Hendriks","Rick Kerkhoven","Luuc Marchand","Ian Hermes","Tommie Schotema",
-            "Charlotte Lagas","Boy Rath"] # "Remon Staal",
+            "Moos Minkes","Rick Kerkhoven","Luuc Marchand","Ian Hermes","Tommie Schotema",
+            "Charlotte Lagas","Boy Rath","Grace van Houwelingen"] #,"Josephine Lagas" 
 
-test_wervers = ["Luke Hermes","Rick Kerkhoven"]
+test_wervers = ["Ismael El Hamouchi","Rosa de Kiefte"]
 run(wervers) # run script
+
+
 

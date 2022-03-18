@@ -10,6 +10,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {spawn} = require('child_process')
 const backupModel = require('./backupModel')
+const scraping = require('./scraping')
+const dataModel = require('./dataModel')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -32,6 +34,47 @@ async function main() {
             })
             python.on('close', (code) => {
                 res.send(dataToSend)
+            })
+        })
+
+        app.get('/scrape-data', async (req, res) => {
+            console.time('duration')
+            const werverList = ["Rosa de Kiefte","Ali Khaldi","Abdi Ali","Arjan Noordermeer",
+                    "Brett Taument","Britt Gruntjes","Camille Montoux",
+                    "Giovanni Melissant","Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
+                    "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
+                    "Simon Knotnerus","Thijs Bakker","Tim Chibanov",
+                    "Wouter Wissema","Ferry Biesheuvel","Luc van der Vorm",
+                    "Moos Minkes", "Carl Hendriks","Rick Kerkhoven","Luuc Marchand","Ian Hermes","Tommie Schotema",
+                    "Charlotte Lagas","Boy Rath", "Grace van Houwelingen"]
+            const testWervers = ['Rosa de Kiefte']
+            console.log('Fetching data ...')
+            const scrape = await scraping.atlas(werverList)
+
+            const date = new Date()
+            const data = {
+                date: date,
+                data: scrape
+            }
+            const newData = new dataModel(data)
+            await newData.save( async(err, newDataResult) => {
+                console.log(data)
+                console.log('data refreshed')
+            })
+            res.send(data)
+            console.timeEnd('duration')
+        })
+
+        app.get('/data', async (req, res) => {
+            let inputDate = -1
+            dataModel.findOne({}, {}, {sort: {date: inputDate}}, (err, result) => {
+                res.type('application/json')
+                if (err) {
+                    res.json(err)
+                    console.log(err)
+                } else {
+                    res.json(result)
+                }
             })
         })
 
