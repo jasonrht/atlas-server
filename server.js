@@ -125,6 +125,14 @@ async function main() {
             }
         })
 
+        app.post('/delete-user', (req, res) => {
+            atlasWerver.deleteOne({ name: res.werver }, (err) => {
+                if (err) {
+                    console.log(err)
+                }
+            })
+        })
+
         app.post('/users/login', async (req, res) => {
             const user = await atlasUser.findOne({ username: req.body.user })
             console.log(`user: ${user}`)

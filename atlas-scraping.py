@@ -332,6 +332,24 @@ def get_dates():
     res_dict['backup'] = str(res_dict['backup'])
     return res_dict
 
+def get_wervers():
+    '''Function that return a tuple with lists of werver names.'''
+    res = requests.get('https://atlas-website-backend.herokuapp.com/get-wervers').json()
+    sp = []
+    p = []
+    st = []
+    for werver in res:
+        status = werver['status']
+        if status == 'SP':
+            sp.append(werver['name'])
+        elif status == 'P':
+            p.append(werver['name'])
+        elif status == 'ST':
+            st.append(werver['name'])
+    return sp, p, st
+
+
+
 def run(wervers):
     url = "https://backstage.atlas-sales-agency.nl/login"
     werver_url = "https://backstage.atlas-sales-agency.nl/admin/career/bonus/detail?user=7377&start_month=01&start_year=2022"
@@ -383,8 +401,7 @@ def run(wervers):
 
         apex_df = apex_data(df)
 
-        papyrus_wervers = ["Jelle van Eck","Boris Ruijtenbeek",
-                            "Arjan Noordermeer"]
+        papyrus_wervers = ["Jelle van Eck", "Arjan Noordermeer"]
         papyrus_df = poule_data(papyrus_wervers,"papyrus_data", df)
 
         hermes_wervers = ["Brett Taument","Quentin Booi","Luke Hermes","Luuc Marchand","Ian Hermes"]
@@ -397,32 +414,26 @@ def run(wervers):
         izzy_wervers = ["Ismael El Hamouchi","Willemijn Renzen",'Charlotte Lagas']
         izzy_df = poule_data(izzy_wervers,"izzy_data",df)
 
-        sp = ["Arjan Noordermeer","Britt Gruntjes","Camille Montoux","Carl Hendriks","Mathis Montoux","Moos Minkes","Owen Maas",
-            "Rick Kerkhoven","Thijs Bakker","Tim Chibanov","Willemijn Renzen","Wouter Wissema","Max Scholsberg",
-            "Ismael El Hamouchi","Simon Knotnerus","Jethro Swennen","Ferry Biesheuvel","Luke Hermes","Jelle van Eck","Luc van der Vorm",'Ian Hermes']
+        sp, promotors , st = get_wervers() 
         sp_df = poule_data(sp, "sp_data", df)
-
-        promotors = ["Rosa de Kiefte","Brett Taument","Charlotte Lagas"]
         promotors_df = poule_data(promotors, "promotor_data", df)
-
-        st = ["Joep Koolen", "Luuc Marchand","Quentin Booi","Grace van Houwelingen","Josephine Lagas","Roderick Renzen"]
         st_df = poule_data(st, "st_data", df)
 
-        try:
-            print('Uploading data to google spreadsheets ...')
-            to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
-            to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
-            to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
-            to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
-            to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
-            to_spreadsheet(sp_df,"B3","Leaderboard april 2022")
-            to_spreadsheet(promotors_df,"B26","Leaderboard april 2022")
-            to_spreadsheet(st_df,"B33","Leaderboard april 2022")
+        # try:
+        #     print('Uploading data to google spreadsheets ...')
+        #     to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
+        #     to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
+        #     to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
+        #     to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
+        #     to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
+        #     to_spreadsheet(sp_df,"B3","Leaderboard april 2022")
+        #     to_spreadsheet(promotors_df,"B26","Leaderboard april 2022")
+        #     to_spreadsheet(st_df,"B33","Leaderboard april 2022")
 
-            print("Data upload to spreadsheet success !")
-        except Exception as e:
-            print(e)
-            print('Failed to upload to spreadsheets !')
+        #     print("Data upload to spreadsheet success !")
+        # except Exception as e:
+        #     print(e)
+        #     print('Failed to upload to spreadsheets !')
 
         df.insert(0,"Nr.",new)
         gob2 = df.pop('GOB')
@@ -469,7 +480,7 @@ def run(wervers):
         print("Script run fail !")
 
 
-wervers = ["Oscar Martinez","Eefje Groot Koerkamp","Rosa de Kiefte","Ali Khaldi","Arjan Noordermeer",
+wervers = ["Rosa de Kiefte","Ali Khaldi","Arjan Noordermeer",
             "Brett Taument","Britt Gruntjes","Camille Montoux","David Migo",
             "Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
             "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
@@ -480,6 +491,8 @@ wervers = ["Oscar Martinez","Eefje Groot Koerkamp","Rosa de Kiefte","Ali Khaldi"
 
 test_wervers = ["Ismael El Hamouchi","Rosa de Kiefte"]
 run(wervers) # run script
+
+# print(get_wervers())
 
 
 
