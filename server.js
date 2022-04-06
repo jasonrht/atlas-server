@@ -8,7 +8,7 @@ const atlasUser = require('./atlasUser')
 const atlasWerver = require('./atlasWerver')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {spawn} = require('child_process')
+const { spawn } = require('child_process')
 const backupModel = require('./backupModel')
 const scraping = require('./scraping')
 const dataModel = require('./dataModel')
@@ -16,11 +16,13 @@ const dataModel = require('./dataModel')
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.use(cors())
+app.use(cors({
+    origin: '*',
+}))
 app.use(express.json())
 
 const uri = process.env.MONGO_URI
-mongoose.connect(uri, { useNewUrlParser: true});
+mongoose.connect(uri, { useNewUrlParser: true });
 console.log('Connected to MongoDB client.')
 
 async function main() {
@@ -39,14 +41,14 @@ async function main() {
 
         app.get('/scrape-data', async (req, res) => {
             console.time('duration')
-            const werverList = ["Rosa de Kiefte","Ali Khaldi","Abdi Ali","Arjan Noordermeer",
-                    "Brett Taument","Britt Gruntjes","Camille Montoux",
-                    "Giovanni Melissant","Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
-                    "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
-                    "Simon Knotnerus","Thijs Bakker","Tim Chibanov",
-                    "Wouter Wissema","Ferry Biesheuvel","Luc van der Vorm",
-                    "Moos Minkes", "Carl Hendriks","Rick Kerkhoven","Luuc Marchand","Ian Hermes","Tommie Schotema",
-                    "Charlotte Lagas","Boy Rath", "Grace van Houwelingen"]
+            const werverList = ["Rosa de Kiefte", "Ali Khaldi", "Abdi Ali", "Arjan Noordermeer",
+                "Brett Taument", "Britt Gruntjes", "Camille Montoux",
+                "Giovanni Melissant", "Ismael El Hamouchi", "Jelle van Eck", "Jethro Swennen", "Luke Hermes",
+                "Mathis Montoux", "Max Scholsberg", "Owen Maas", "Quentin Booi",
+                "Simon Knotnerus", "Thijs Bakker", "Tim Chibanov",
+                "Wouter Wissema", "Ferry Biesheuvel", "Luc van der Vorm",
+                "Moos Minkes", "Carl Hendriks", "Rick Kerkhoven", "Luuc Marchand", "Ian Hermes", "Tommie Schotema",
+                "Charlotte Lagas", "Boy Rath", "Grace van Houwelingen"]
             const testWervers = ['Rosa de Kiefte']
             console.log('Fetching data ...')
             const scrape = await scraping.atlas(werverList)
@@ -57,7 +59,7 @@ async function main() {
                 data: scrape
             }
             const newData = new dataModel(data)
-            await newData.save( async(err, newDataResult) => {
+            await newData.save(async (err, newDataResult) => {
                 console.log(data)
                 console.log('data refreshed')
             })
@@ -67,7 +69,7 @@ async function main() {
 
         app.get('/data', async (req, res) => {
             let inputDate = -1
-            dataModel.findOne({}, {}, {sort: {date: inputDate}}, (err, result) => {
+            dataModel.findOne({}, {}, { sort: { date: inputDate } }, (err, result) => {
                 res.type('application/json')
                 if (err) {
                     res.json(err)
@@ -83,7 +85,7 @@ async function main() {
             dates = req.body
             console.log(dates)
             console.log('dates posted!')
-        }) 
+        })
 
         app.get('/getDates', (req, res) => {
             res.send(dates)
@@ -92,7 +94,7 @@ async function main() {
         app.get('/users', async (req, res) => {
             atlasUser.find({}, (err, result) => {
                 res.type('application/json')
-                if(err) {
+                if (err) {
                     res.json(err)
                     console.log(err)
                 } else {
@@ -102,53 +104,53 @@ async function main() {
         })
 
         app.post('/add-user', async (req, res) => {
-            try{
+            try {
                 const salt = await bcrypt.genSalt()
                 const hashedPW = await bcrypt.hash(req.body.password, salt)
                 console.log(hashedPW)
-                
+
                 const user = {
-                    username: req.body.username, 
-                    email: req.body.email, 
+                    username: req.body.username,
+                    email: req.body.email,
                     password: hashedPW,
                 }
                 const newUser = new atlasUser(user)
 
-                await newUser.save( async(err, newUserResult) => {
+                await newUser.save(async (err, newUserResult) => {
                     console.log(user)
                     console.log('new user created')
                 })
-            } catch(e) {
+            } catch (e) {
                 console.log(e)
-            }        
+            }
         })
 
         app.post('/users/login', async (req, res) => {
-            const user = await atlasUser.findOne({username: req.body.user})
+            const user = await atlasUser.findOne({ username: req.body.user })
             console.log(`user: ${user}`)
-            if(user == null){
+            if (user == null) {
                 return res.status(400).send('Cannot find user')
             }
 
             let authenticated = false
-            try{
-                if(await bcrypt.compare(req.body.password, user.password)){
+            try {
+                if (await bcrypt.compare(req.body.password, user.password)) {
                     authenticated = true
                     console.log('Login succes!')
 
                     // dont forget to add expiration date to token !!!
                     const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN)
-                    res.json({authenticated: true, token: accessToken, user: user})
+                    res.json({ authenticated: true, token: accessToken, user: user })
                 } else {
-                    res.json({authenticated: false, message:'no user exists'})
+                    res.json({ authenticated: false, message: 'no user exists' })
                     console.log('Login failed ...')
                 }
-            } catch(e){
+            } catch (e) {
                 console.log(e)
             }
         })
 
-        app.get('/userAuth', authenticateToken, (req,res) => {
+        app.get('/userAuth', authenticateToken, (req, res) => {
             res.send('user authenticated')
         })
 
@@ -156,10 +158,10 @@ async function main() {
             const token = req.headers['authorization']
             console.log(`token: ${token}`)
 
-            if(token === null) return res.sendStatus(401)
+            if (token === null) return res.sendStatus(401)
 
-            jwt.verify(token, process.env.ACCESS_TOKEN, (err,user) => {
-                if(err) {
+            jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+                if (err) {
                     console.log(err)
                     return res.sendStatus(403)
                 }
@@ -171,7 +173,7 @@ async function main() {
         app.get("/api", async (req, res) => {
             // let searchQuery = 'sort: {date: -1}'
             let inputDate = -1
-            algemeenLBModel.findOne({}, {}, {sort: {date: inputDate}}, (err, result) => {
+            algemeenLBModel.findOne({}, {}, { sort: { date: inputDate } }, (err, result) => {
                 res.type('application/json')
                 if (err) {
                     res.json(err)
@@ -182,20 +184,32 @@ async function main() {
             })
         });
 
-        app.post('/add-werver', async (req,res) => {
+        app.get('/get-wervers', async (req, res) => {
+            atlasWerver.find({}, (err, result) => {
+                res.type('application/json')
+                if (err) {
+                    res.json(err)
+                    console.log(err)
+                } else {
+                    res.json(result)
+                }
+            })
+        })
+
+        app.post('/add-werver', async (req, res) => {
             try {
                 const werver = {
-                    name: req.body.name, 
+                    name: req.body.name,
                     poule: req.body.poule,
                     status: req.body.status,
                 }
                 const newWerver = new atlasWerver(werver)
-    
-                await newWerver.save(async(err, newWerverResult) => {
+
+                await newWerver.save(async (err, newWerverResult) => {
                     console.log(werver)
                     console.log('new werver added')
                 })
-            } catch(e) {
+            } catch (e) {
                 console.log(e)
             }
         })
@@ -203,13 +217,13 @@ async function main() {
         app.get('/backups', (req, res) => {
             backupModel.find({}, (err, result) => {
                 res.type('application/json')
-                if(err) {
+                if (err) {
                     res.json(err)
                     console.log(err)
                 } else {
                     res.json(result)
                 }
-            })           
+            })
         })
 
         app.listen(PORT, () => {

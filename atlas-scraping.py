@@ -342,7 +342,7 @@ def run(wervers):
     names = ["Algemeen", "SVHK"]
     # dates = get_dates()
     dates = {
-        'selectedMonth': '03',
+        'selectedMonth': '04',
         'selectedYear': 2022,
         'backup': 'False',
     }
@@ -397,17 +397,15 @@ def run(wervers):
         izzy_wervers = ["Ismael El Hamouchi","Willemijn Renzen",'Charlotte Lagas']
         izzy_df = poule_data(izzy_wervers,"izzy_data",df)
 
-        sp = ["Abdi Ali","Arjan Noordermeer","Britt Gruntjes","Camille Montoux","Carl Hendriks","Mathis Montoux","Moos Minkes","Owen Maas",
+        sp = ["Arjan Noordermeer","Britt Gruntjes","Camille Montoux","Carl Hendriks","Mathis Montoux","Moos Minkes","Owen Maas",
             "Rick Kerkhoven","Thijs Bakker","Tim Chibanov","Willemijn Renzen","Wouter Wissema","Max Scholsberg",
-            "Ismael El Hamouchi","Simon Knotnerus","Jethro Swennen","Ferry Biesheuvel","Luke Hermes","Jelle van Eck","Luc van der Vorm"]
+            "Ismael El Hamouchi","Simon Knotnerus","Jethro Swennen","Ferry Biesheuvel","Luke Hermes","Jelle van Eck","Luc van der Vorm",'Ian Hermes']
         sp_df = poule_data(sp, "sp_data", df)
 
-        promotors = ["Rosa de Kiefte","Brett Taument",
-            "Charlotte Lagas"]
+        promotors = ["Rosa de Kiefte","Brett Taument","Charlotte Lagas"]
         promotors_df = poule_data(promotors, "promotor_data", df)
 
-        st = ["Giovanni Melissant","Josephine Lagas",
-            "Joep Koolen", "Luuc Marchand","Quentin Booi","Tommie Schotema","Boy Rath","Grace van Houwelingen"]
+        st = ["Joep Koolen", "Luuc Marchand","Quentin Booi","Grace van Houwelingen","Josephine Lagas","Roderick Renzen"]
         st_df = poule_data(st, "st_data", df)
 
         try:
@@ -417,9 +415,9 @@ def run(wervers):
             to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
             to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
             to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
-            to_spreadsheet(sp_df,"B3","Leaderboard maart 2022")
-            to_spreadsheet(promotors_df,"B28","Leaderboard maart 2022")
-            to_spreadsheet(st_df,"B35","Leaderboard maart 2022")
+            to_spreadsheet(sp_df,"B3","Leaderboard april 2022")
+            to_spreadsheet(promotors_df,"B26","Leaderboard april 2022")
+            to_spreadsheet(st_df,"B33","Leaderboard april 2022")
 
             print("Data upload to spreadsheet success !")
         except Exception as e:
@@ -471,14 +469,14 @@ def run(wervers):
         print("Script run fail !")
 
 
-wervers = ["Oscar Martinez","Eefje Groot Koerkamp","Rosa de Kiefte","Ali Khaldi","Abdi Ali","Arjan Noordermeer",
+wervers = ["Oscar Martinez","Eefje Groot Koerkamp","Rosa de Kiefte","Ali Khaldi","Arjan Noordermeer",
             "Brett Taument","Britt Gruntjes","Camille Montoux","David Migo",
-            "Giovanni Melissant","Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
+            "Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
             "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
             "Simon Knotnerus","Ted Hulshof","Thijs Bakker","Tim Chibanov",
             "Willemijn Renzen","Wijnand Hoofs","Wouter Wissema","Ferry Biesheuvel","Luc van der Vorm",
-            "Moos Minkes","Rick Kerkhoven","Luuc Marchand","Ian Hermes","Tommie Schotema",
-            "Charlotte Lagas","Boy Rath","Grace van Houwelingen"] #,"Josephine Lagas" 
+            "Moos Minkes","Rick Kerkhoven","Luuc Marchand","Ian Hermes",
+            "Charlotte Lagas","Grace van Houwelingen","Josephine Lagas","Roderick Renzen"]  
 
 test_wervers = ["Ismael El Hamouchi","Rosa de Kiefte"]
 run(wervers) # run script
