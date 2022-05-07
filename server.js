@@ -39,19 +39,13 @@ async function main() {
             })
         })
 
+        let werverList = []
+
         app.get('/scrape-data', async (req, res) => {
             console.time('duration')
-            const werverList = ["Rosa de Kiefte", "Ali Khaldi", "Abdi Ali", "Arjan Noordermeer",
-                "Brett Taument", "Britt Gruntjes", "Camille Montoux",
-                "Giovanni Melissant", "Ismael El Hamouchi", "Jelle van Eck", "Jethro Swennen", "Luke Hermes",
-                "Mathis Montoux", "Max Scholsberg", "Owen Maas", "Quentin Booi",
-                "Simon Knotnerus", "Thijs Bakker", "Tim Chibanov",
-                "Wouter Wissema", "Ferry Biesheuvel", "Luc van der Vorm",
-                "Moos Minkes", "Carl Hendriks", "Rick Kerkhoven", "Luuc Marchand", "Ian Hermes", "Tommie Schotema",
-                "Charlotte Lagas", "Boy Rath", "Grace van Houwelingen"]
             const testWervers = ['Rosa de Kiefte']
             console.log('Fetching data ...')
-            const scrape = await scraping.atlas(werverList)
+            const scrape = await scraping.atlas()
 
             const date = new Date()
             const data = {
@@ -78,6 +72,16 @@ async function main() {
                     res.json(result)
                 }
             })
+        })
+
+        app.post('/new-pass', (req, res) => {
+            const newPass = {
+                name: req.body.naam,
+                project: req.body.project,
+                photo: req.body.pasfoto,
+                birthday: req.body.geboortedatum,
+            }
+            console.log(newPass)
         })
 
         let dates = {}
@@ -126,10 +130,12 @@ async function main() {
         })
 
         app.post('/delete-user', (req, res) => {
-            atlasWerver.deleteOne({ name: res.werver }, (err) => {
+            console.log(req.body.name)
+            atlasWerver.deleteOne({ name: req.body.naam }, (err) => {
                 if (err) {
                     console.log(err)
                 }
+                console.log(`${req.body.name} deleted`)
             })
         })
 
@@ -200,6 +206,9 @@ async function main() {
                     console.log(err)
                 } else {
                     res.json(result)
+                    for (werver of result) {
+                        werverList.push(werver.name)
+                    }
                 }
             })
         })

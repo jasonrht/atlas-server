@@ -333,7 +333,7 @@ def get_dates():
     return res_dict
 
 def get_wervers():
-    '''Function that return a tuple with lists of werver names.'''
+    '''Function that returns a tuple with lists of werver names.'''
     res = requests.get('https://atlas-website-backend.herokuapp.com/get-wervers').json()
     sp = []
     p = []
@@ -355,13 +355,13 @@ def run(wervers):
     werver_url = "https://backstage.atlas-sales-agency.nl/admin/career/bonus/detail?user=7377&start_month=01&start_year=2022"
     svhk_login_url = "https://backstage.stichtingvanhetkind.nl/login"
     werver_url_svhk = "https://backstage.stichtingvanhetkind.nl/admin/career/bonus/detail?user=7661&start_month=01&start_year=2022"
-    login_urls = [url, svhk_login_url]
-    urls = [werver_url, werver_url_svhk]
-    names = ["Algemeen", "SVHK"]
-    # dates = get_dates()
-    dates = {
-        'selectedMonth': '04',
-        'selectedYear': 2022,
+    login_urls = [url, svhk_login_url] 
+    urls = [werver_url, werver_url_svhk] 
+    names = ["Algemeen", "SVHK"] 
+    # dates = get_dates() 
+    dates = { 
+        'selectedMonth': '05', 
+        'selectedYear': 2022, 
         'backup': 'False',
     }
     month = dates['selectedMonth']
@@ -414,26 +414,29 @@ def run(wervers):
         izzy_wervers = ["Ismael El Hamouchi","Willemijn Renzen",'Charlotte Lagas']
         izzy_df = poule_data(izzy_wervers,"izzy_data",df)
 
-        sp, promotors , st = get_wervers() 
+        # sp, promotors , st = get_wervers() 
+        sp = ['Arjan Noordermeer', 'Britt Gruntjes','Camille Montoux','Ferry Biesheuvel','Ian Hermes','Ismael El Hamouchi','Jelle van Eck','Jethro Swennen','Luc van der Vorm','Luke Hermes','Mathis Montoux','Max Scholsberg','Moos Minkes','Owen Maas','Rick Kerkhoven','Tim Chibanov','Willemijn Renzen','Wouter Wissema']
+        promotors = ['Brett Taument','Charlotte Lagas','Rosa de Kiefte']
+        st = ['Grace van Houwelingen','Luuc Marchand','Quentin Booi','Roderick Renzen']
         sp_df = poule_data(sp, "sp_data", df)
         promotors_df = poule_data(promotors, "promotor_data", df)
         st_df = poule_data(st, "st_data", df)
 
-        # try:
-        #     print('Uploading data to google spreadsheets ...')
-        #     to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
-        #     to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
-        #     to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
-        #     to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
-        #     to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
-        #     to_spreadsheet(sp_df,"B3","Leaderboard april 2022")
-        #     to_spreadsheet(promotors_df,"B26","Leaderboard april 2022")
-        #     to_spreadsheet(st_df,"B33","Leaderboard april 2022")
+        try:
+            print('Uploading data to google spreadsheets ...')
+            to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
+            to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
+            to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
+            to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
+            to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
+            to_spreadsheet(sp_df,"B3","Leaderboard Mei 2022")
+            to_spreadsheet(promotors_df,"B25","Leaderboard Mei 2022")
+            to_spreadsheet(st_df,"B32","Leaderboard Mei 2022")
 
-        #     print("Data upload to spreadsheet success !")
-        # except Exception as e:
-        #     print(e)
-        #     print('Failed to upload to spreadsheets !')
+            print("Data upload to spreadsheet success !")
+        except Exception as e:
+            print(e)
+            print('Failed to upload to spreadsheets !')
 
         df.insert(0,"Nr.",new)
         gob2 = df.pop('GOB')
@@ -479,20 +482,20 @@ def run(wervers):
         print(traceback.format_exc())
         print("Script run fail !")
 
+if __name__ == '__main__':
+    wervers = ["Rosa de Kiefte","Ali Khaldi","Arjan Noordermeer",
+                "Brett Taument","Britt Gruntjes","Camille Montoux","David Migo",
+                "Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
+                "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
+                "Simon Knotnerus","Ted Hulshof","Thijs Bakker","Tim Chibanov",
+                "Willemijn Renzen","Wijnand Hoofs","Wouter Wissema","Ferry Biesheuvel","Luc van der Vorm",
+                "Moos Minkes","Rick Kerkhoven","Luuc Marchand","Ian Hermes",
+                "Charlotte Lagas","Grace van Houwelingen","Josephine Lagas","Roderick Renzen"]  
 
-wervers = ["Rosa de Kiefte","Ali Khaldi","Arjan Noordermeer",
-            "Brett Taument","Britt Gruntjes","Camille Montoux","David Migo",
-            "Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
-            "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
-            "Simon Knotnerus","Ted Hulshof","Thijs Bakker","Tim Chibanov",
-            "Willemijn Renzen","Wijnand Hoofs","Wouter Wissema","Ferry Biesheuvel","Luc van der Vorm",
-            "Moos Minkes","Rick Kerkhoven","Luuc Marchand","Ian Hermes",
-            "Charlotte Lagas","Grace van Houwelingen","Josephine Lagas","Roderick Renzen"]  
+    test_wervers = ["Ismael El Hamouchi","Rosa de Kiefte"]
+    run(wervers) # run script
 
-test_wervers = ["Ismael El Hamouchi","Rosa de Kiefte"]
-run(wervers) # run script
-
-# print(get_wervers())
+    # print(get_wervers())
 
 
 
