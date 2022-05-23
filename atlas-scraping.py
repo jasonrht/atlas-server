@@ -65,7 +65,7 @@ def get_data(werver,content):
                 tds = tr.find_all("td", attrs={"class":"number"})
                 tot = tds[0].text.replace("M","").replace("⨉","").replace(",",".").strip()
                 sal = tds[3].text.replace("€\xa0","").replace(",",".").strip()
-                if not(tot=="") and not(sal==""):
+                if not(tot=="") and not(sal=="") and float(tot)<=15:
                     factor = float(sal)/float(tot)
                     break
         i+=1
@@ -92,6 +92,7 @@ def get_data(werver,content):
                 if not(bedrag==""):
                     f_bedrag = float(bedrag)
                     if f_bedrag>15:
+                        print(row)
                         tob += factor*(f_bedrag-15)
         i+=1 
 
@@ -422,21 +423,21 @@ def run(wervers):
         promotors_df = poule_data(promotors, "promotor_data", df)
         st_df = poule_data(st, "st_data", df)
 
-        try:
-            print('Uploading data to google spreadsheets ...')
-            to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
-            to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
-            to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
-            to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
-            to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
-            to_spreadsheet(sp_df,"B3","Leaderboard Mei 2022")
-            to_spreadsheet(promotors_df,"B25","Leaderboard Mei 2022")
-            to_spreadsheet(st_df,"B32","Leaderboard Mei 2022")
+        # try:
+        #     print('Uploading data to google spreadsheets ...')
+        #     to_spreadsheet(papyrus_df,"B3","Nino's Poule Leaderboard")
+        #     to_spreadsheet(swennen_df,"B3","Jethro's Poule Leaderboard")
+        #     to_spreadsheet(hermes_df,"B3","Luke & Ian's Poule Leaderboard")
+        #     to_spreadsheet(apex_df,"B3","Atlas APEX LeaderboardDec")
+        #     to_spreadsheet(izzy_df,"B3","Ismael's Poule Leaderboard")
+        #     to_spreadsheet(sp_df,"B3","Leaderboard Mei 2022")
+        #     to_spreadsheet(promotors_df,"B25","Leaderboard Mei 2022")
+        #     to_spreadsheet(st_df,"B32","Leaderboard Mei 2022")
 
-            print("Data upload to spreadsheet success !")
-        except Exception as e:
-            print(e)
-            print('Failed to upload to spreadsheets !')
+        #     print("Data upload to spreadsheet success !")
+        # except Exception as e:
+        #     print(e)
+        #     print('Failed to upload to spreadsheets !')
 
         df.insert(0,"Nr.",new)
         gob2 = df.pop('GOB')
@@ -483,7 +484,8 @@ def run(wervers):
         print("Script run fail !")
 
 if __name__ == '__main__':
-    wervers = ["Rosa de Kiefte","Ali Khaldi","Arjan Noordermeer",
+    #,"Ali Khaldi",
+    wervers = ["Rosa de Kiefte","Arjan Noordermeer",
                 "Brett Taument","Britt Gruntjes","Camille Montoux","David Migo",
                 "Ismael El Hamouchi","Jelle van Eck","Jethro Swennen","Luke Hermes",
                 "Mathis Montoux","Max Scholsberg","Owen Maas","Quentin Booi",
@@ -492,8 +494,8 @@ if __name__ == '__main__':
                 "Moos Minkes","Rick Kerkhoven","Luuc Marchand","Ian Hermes",
                 "Charlotte Lagas","Grace van Houwelingen","Josephine Lagas","Roderick Renzen"]  
 
-    test_wervers = ["Ismael El Hamouchi","Rosa de Kiefte"]
-    run(wervers) # run script
+    test_wervers = ["Ian Hermes"]
+    run(test_wervers) # run script
 
     # print(get_wervers())
 

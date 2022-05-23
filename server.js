@@ -12,7 +12,21 @@ const { spawn } = require('child_process')
 const backupModel = require('./backupModel')
 const scraping = require('./scraping')
 const dataModel = require('./dataModel')
-
+const sendMail = require('./sendMail')
+const multer = require('multer')
+const path = require('path')
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/images')
+    },
+    filename: (req, file, cb) => {
+        // console.log(file.originalname)
+        const t = new Date()
+        // cb(null, `${req.body.firstName}-${req.body.lastName}${t.getDate()}-${t.getMonth() + 1}-${t.getFullYear()}` + path.extname(file.originalname))
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({ storage: storage })
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -20,6 +34,8 @@ app.use(cors({
     origin: '*',
 }))
 app.use(express.json())
+
+app.use(express.static('public'));
 
 const uri = process.env.MONGO_URI
 mongoose.connect(uri, { useNewUrlParser: true });
@@ -74,14 +90,23 @@ async function main() {
             })
         })
 
-        app.post('/new-pass', (req, res) => {
-            const newPass = {
-                name: req.body.naam,
-                project: req.body.project,
-                photo: req.body.pasfoto,
+        app.post('/new-pass', upload.single('file'), (req, res) => {
+            // req.file ? res.json(req.file) : console.log('File does not exist ...')
+            const data = req.body
+            const photoFile = req.file
+            const emailData = {
+                // receiver: 'Kelly',
+                atlasLocation: req.body.vestiging,
+                // address: 'Vivaldistraat',
+                // city: 'Capelle',
+                projects: req.body.project,
+                firstName: req.body.naam.split(' ')[0],
+                lastName: req.body.naam.split(' ').slice(1).join(' '),
                 birthday: req.body.geboortedatum,
+                photo: photoFile,
             }
-            console.log(newPass)
+            console.log(emailData)
+            sendMail.sendMail(emailData).then(console.log('Email sent successfully !'))
         })
 
         let dates = {}
@@ -139,11 +164,16 @@ async function main() {
             })
         })
 
+
         app.post('/users/login', async (req, res) => {
             const user = await atlasUser.findOne({ username: req.body.user })
-            console.log(`user: ${user}`)
+            console.log(`userInfo: ${user}`)
             if (user == null) {
                 return res.status(400).send('Cannot find user')
+            }
+
+            const generateAccessToken = (userObject) => {
+                return jwt.sign(userObject.toJSON(), process.env.ACCESS_TOKEN, { expiresIn: '30m' })
             }
 
             let authenticated = false
@@ -153,8 +183,9 @@ async function main() {
                     console.log('Login succes!')
 
                     // dont forget to add expiration date to token !!!
-                    const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN)
-                    res.json({ authenticated: true, token: accessToken, user: user })
+                    const accessToken = generateAccessToken(user)
+                    const refreshToken = jwt.sign(user.toJSON(), process.env.REFRESH_TOKEN)
+                    res.json({ authenticated: true, token: accessToken, refreshToken: refreshToken, user: user })
                 } else {
                     res.json({ authenticated: false, message: 'no user exists' })
                     console.log('Login failed ...')
