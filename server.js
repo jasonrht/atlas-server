@@ -31,7 +31,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(cors({
-    origin: 'https://atlas-frontend-jasonrht.vercel.app',
+    origin: '*',
 }))
 app.use(express.json())
 
