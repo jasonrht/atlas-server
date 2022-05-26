@@ -5,11 +5,11 @@ const werverSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-    status: {
-        type: String,
-        required: true
-    },
-    poule: {
+	status: {
+		type: String,
+		required: true
+	},
+	poule: {
 		type: String
 	},
 })
