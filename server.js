@@ -31,7 +31,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(cors({
-    origin: '*',
+    origin: 'https://atlas-frontend-jasonrht.vercel.app',
 }))
 app.use(express.json())
 
@@ -106,6 +106,7 @@ async function main() {
                 photo: photoFile,
             }
             sendMail.sendMail(emailData).then(console.log('Email sent successfully !'))
+            return res.send(data)
         })
 
         let dates = {}
