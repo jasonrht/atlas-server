@@ -105,7 +105,12 @@ async function main() {
                 birthday: req.body.geboortedatum,
                 photo: photoFile,
             }
-            sendMail.sendMail(emailData).then(console.log('Email sent successfully !'))
+            try {
+                await sendMail.sendMail(emailData)
+                console.log('Email sent successfully !')
+            } catch (err) {
+                console.log(err)
+            }
             return res.send(data)
         })
 

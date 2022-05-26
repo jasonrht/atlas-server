@@ -55,55 +55,61 @@ async function sendMail(emailData) {
         svhk: 'kelly@stichtingvanhetkind.nl',
         trust: 'bestellingen@trustmarketing.nl'
     }
+    try {
+        if (projects.includes('Stichting van het Kind')) {
+            transporter.sendMail({
+                from: 'jasonraefon@hotmail.com', // sender address
+                to: "jasonraefon@hotmail.com", // list of receivers
+                subject: "Hello ✔", // Subject line
+                // text: "Hello world?", // plain text body
+                html: emailBodySVHK, // html body
+                attachments: emailData.photo ? [
+                    {
+                        filename: `${emailData.photo.originalname}`,
+                        path: `./uploads/images/${emailData.photo.originalname}`,
+                        cid: uuidv4(),
+                    }
+                ] : ''
+            });
+        }
 
-    if (projects.includes('Stichting van het Kind')) {
-        transporter.sendMail({
-            from: 'jasonraefon@hotmail.com', // sender address
-            to: "jasonraefon@hotmail.com", // list of receivers
-            subject: "Hello ✔", // Subject line
-            // text: "Hello world?", // plain text body
-            html: emailBodySVHK, // html body
-            attachments: emailData.photo ? [
-                {
-                    filename: `${emailData.photo.originalname}`,
-                    path: `./uploads/images/${emailData.photo.originalname}`,
-                    cid: uuidv4(),
-                }
-            ] : ''
-        });
+        if (projects.includes('Stichting van het Kind') && projects.length > 1) {
+            transporter.sendMail({
+                from: 'jasonraefon@hotmail.com', // sender address
+                to: "jasonraefon@hotmail.com", // list of receivers
+                subject: "Hello ✔", // Subject line
+                // text: "Hello world?", // plain text body
+                html: emailBody, // html body
+                attachments: emailData.photo ? [
+                    {
+                        filename: `${emailData.photo.originalname}`,
+                        path: `./uploads/images/${emailData.photo.originalname}`,
+                        cid: uuidv4(),
+                    }
+                ] : ''
+            });
+        } else {
+            transporter.sendMail({
+                from: 'jasonraefon@hotmail.com', // sender address
+                to: "jasonraefon@hotmail.com", // list of receivers
+                subject: "Hello ✔", // Subject line
+                // text: "Hello world?", // plain text body
+                html: emailBody, // html body
+                attachments: emailData.photo ? [
+                    {
+                        filename: `${emailData.photo.originalname}`,
+                        path: `./uploads/images/${emailData.photo.originalname}`,
+                        cid: uuidv4(),
+                    }
+                ] : ''
+            });
+        }
+        return 'Email sent successfully !'
+    } catch (err) {
+        return err
     }
 
-    if (projects.includes('Stichting van het Kind') && projects.length > 1) {
-        transporter.sendMail({
-            from: 'jasonraefon@hotmail.com', // sender address
-            to: "jasonraefon@hotmail.com", // list of receivers
-            subject: "Hello ✔", // Subject line
-            // text: "Hello world?", // plain text body
-            html: emailBody, // html body
-            attachments: emailData.photo ? [
-                {
-                    filename: `${emailData.photo.originalname}`,
-                    path: `./uploads/images/${emailData.photo.originalname}`,
-                    cid: uuidv4(),
-                }
-            ] : ''
-        });
-    } else {
-        transporter.sendMail({
-            from: 'jasonraefon@hotmail.com', // sender address
-            to: "jasonraefon@hotmail.com", // list of receivers
-            subject: "Hello ✔", // Subject line
-            // text: "Hello world?", // plain text body
-            html: emailBody, // html body
-            attachments: emailData.photo ? [
-                {
-                    filename: `${emailData.photo.originalname}`,
-                    path: `./uploads/images/${emailData.photo.originalname}`,
-                    cid: uuidv4(),
-                }
-            ] : ''
-        });
-    }
+
 
     // console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
