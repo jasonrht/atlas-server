@@ -89,7 +89,7 @@ async function main() {
             })
         })
 
-        app.post('/new-pass', upload.single('file'), (req, res) => {
+        app.post('/new-pass', upload.single('file'), async (req, res) => {
             // req.file ? res.json(req.file) : console.log('File does not exist ...')
             const data = req.body
             const photoFile = req.file
