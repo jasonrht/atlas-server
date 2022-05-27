@@ -57,7 +57,7 @@ async function sendMail(emailData) {
     try {
         const projects = emailData.projects.split(',')
 
-        if (projects.includes('Stichting van het Kind')) {
+        if (projects.includes('Stichting van het Kind') && projects.length === 1) {
             transporter.sendMail({
                 from: 'jasonraefon@hotmail.com', // sender address
                 to: "jasonraefon@hotmail.com", // list of receivers
