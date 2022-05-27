@@ -72,6 +72,7 @@ async function sendMail(emailData) {
                     }
                 ] : ''
             });
+            console.log('svhk email sent')
         } else if (projects.includes('Stichting van het Kind') && projects.length > 1) {
             const emails = [emailBody, emailBodySVHK]
             transporter.on('idle', () => {
@@ -90,7 +91,7 @@ async function sendMail(emailData) {
                             }
                         ] : ''
                     });
-                    console.log('email sent')
+                    console.log(`email sent: ${emails}`)
                 }
             })
         } else {
@@ -108,6 +109,7 @@ async function sendMail(emailData) {
                     }
                 ] : ''
             });
+            console.log('email sent')
         }
         return 'email sent successfully !'
     } catch (err) {
