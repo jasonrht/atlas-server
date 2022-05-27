@@ -76,6 +76,7 @@ async function sendMail(emailData) {
             console.log('svhk email sent')
         } else if (projects.includes('Stichting van het Kind') && projects.length > 1) {
             const emails = [emailBody, emailBodySVHK]
+            console.log(emails)
             transporter.on('idle', () => {
                 while (transporter.isIdle() && emails.length) {
                     transporter.sendMail({
