@@ -44,7 +44,6 @@ async function sendMail(emailData) {
 
     // `<p>Beste [Kelly / Trust Marketing],<br/><br/>Graag zou ik namens Atlas Sales Agency [vestiging] aan de [adres] te [plaatsnaam] een gepersonaliseerde werverspas van [project(en)] (dikgedrute weglaten als het om SVHK gaat) willen bestellen voor [werver]. De geboortedatum van [voornaam werver] is [geboortedatum].<br/><br/>Een foto van [voornaam werver] is toegevoegd als bijlage.<br/><br/>Bij voorbaat dank.<br/><br/>Met vriendelijke groet,<br/>Nino Retel Helmrich<br/>Atlas Sales Agency</p>`
 
-    const projects = emailData.projects.split(',')
 
 
     const emailBody = `<p>Beste Trust Marketing,<br/><br/>Graag zou ik namens Atlas Sales Agency ${addresses[emailData.atlasLocation].team} aan de ${addresses[emailData.atlasLocation].address} te ${addresses[emailData.atlasLocation].place} een gepersonaliseerde werverspas ${`<b>van ${emailData.projects.length > 1 ? makeEnum(emailData.projects) : emailData.projects}</b>`} willen bestellen voor ${emailData.firstName + ' ' + emailData.lastName}. De geboortedatum van ${emailData.firstName} is ${emailData.birthday}.<br/><br/>Een foto van ${emailData.firstName} is toegevoegd als bijlage.<br/><br/>Bij voorbaat dank.<br/><br/>Met vriendelijke groet,<br/>Nino Retel Helmrich<br/>Atlas Sales Agency</p>`
@@ -56,6 +55,8 @@ async function sendMail(emailData) {
         trust: 'bestellingen@trustmarketing.nl'
     }
     try {
+        const projects = emailData.projects.split(',')
+
         if (projects.includes('Stichting van het Kind')) {
             transporter.sendMail({
                 from: 'jasonraefon@hotmail.com', // sender address
@@ -71,23 +72,27 @@ async function sendMail(emailData) {
                     }
                 ] : ''
             });
-        }
-
-        if (projects.includes('Stichting van het Kind') && projects.length > 1) {
-            transporter.sendMail({
-                from: 'jasonraefon@hotmail.com', // sender address
-                to: "jasonraefon@hotmail.com", // list of receivers
-                subject: "Hello ✔", // Subject line
-                // text: "Hello world?", // plain text body
-                html: emailBody, // html body
-                attachments: emailData.photo ? [
-                    {
-                        filename: `${emailData.photo.originalname}`,
-                        path: `./uploads/images/${emailData.photo.originalname}`,
-                        cid: uuidv4(),
-                    }
-                ] : ''
-            });
+        } else if (projects.includes('Stichting van het Kind') && projects.length > 1) {
+            const emails = [emailBody, emailBodySVHK]
+            transporter.on('idle', () => {
+                while (transporter.isIdle() && emails.length) {
+                    transporter.sendMail({
+                        from: 'jasonraefon@hotmail.com', // sender address
+                        to: "jasonraefon@hotmail.com", // list of receivers
+                        subject: "Hello ✔", // Subject line
+                        // text: "Hello world?", // plain text body
+                        html: emails.shift(), // html body
+                        attachments: emailData.photo ? [
+                            {
+                                filename: `${emailData.photo.originalname}`,
+                                path: `./uploads/images/${emailData.photo.originalname}`,
+                                cid: uuidv4(),
+                            }
+                        ] : ''
+                    });
+                    console.log('email sent')
+                }
+            })
         } else {
             transporter.sendMail({
                 from: 'jasonraefon@hotmail.com', // sender address
