@@ -105,7 +105,7 @@ async function main() {
                 photo: photoFile,
             }
             try {
-                await sendMail.sendMail(emailData)
+                sendMail.sendMail(emailData)
                 console.log('Email sent successfully !')
             } catch (err) {
                 console.log(err)

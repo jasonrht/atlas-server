@@ -109,7 +109,7 @@ async function sendMail(emailData) {
                 ] : ''
             });
         }
-        return 'Email sent successfully !'
+        return 'email sent successfully !'
     } catch (err) {
         return err
     }
