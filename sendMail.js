@@ -15,6 +15,7 @@ async function sendMail(emailData) {
             user: process.env.EMAIL, // generated ethereal user
             pass: process.env.EMAIL_PW, // generated ethereal password
         },
+        maxConnections: 1,
     });
 
     const addresses = {
