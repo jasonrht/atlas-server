@@ -77,25 +77,34 @@ async function sendMail(emailData) {
         } else if (projects.includes('Stichting van het Kind') && projects.length > 1) {
             const emails = [emailBody, emailBodySVHK]
             console.log(emails)
-            transporter.on('idle', () => {
-                while (transporter.isIdle() && emails.length) {
-                    transporter.sendMail({
-                        from: 'jasonraefon@hotmail.com', // sender address
-                        to: "jasonraefon@hotmail.com", // list of receivers
-                        subject: "Hello ✔", // Subject line
-                        // text: "Hello world?", // plain text body
-                        html: emails.shift(), // html body
-                        attachments: emailData.photo ? [
-                            {
-                                filename: `${emailData.photo.originalname}`,
-                                path: `./uploads/images/${emailData.photo.originalname}`,
-                                cid: uuidv4(),
-                            }
-                        ] : ''
-                    });
-                    console.log(`email sent: ${emails}`)
-                }
-            })
+            transporter.sendMail({
+                from: 'jasonraefon@hotmail.com', // sender address
+                to: "jasonraefon@hotmail.com", // list of receivers
+                subject: "Hello ✔", // Subject line
+                // text: "Hello world?", // plain text body
+                html: emailBody, // html body
+                attachments: emailData.photo ? [
+                    {
+                        filename: `${emailData.photo.originalname}`,
+                        path: `./uploads/images/${emailData.photo.originalname}`,
+                        cid: uuidv4(),
+                    }
+                ] : ''
+            });
+            transporter.sendMail({
+                from: 'jasonraefon@hotmail.com', // sender address
+                to: "jasonraefon@hotmail.com", // list of receivers
+                subject: "Hello ✔", // Subject line
+                // text: "Hello world?", // plain text body
+                html: emailBodySVHK, // html body
+                attachments: emailData.photo ? [
+                    {
+                        filename: `${emailData.photo.originalname}`,
+                        path: `./uploads/images/${emailData.photo.originalname}`,
+                        cid: uuidv4(),
+                    }
+                ] : ''
+            });
         } else {
             transporter.sendMail({
                 from: 'jasonraefon@hotmail.com', // sender address
