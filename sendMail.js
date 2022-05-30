@@ -38,8 +38,8 @@ async function sendMail(emailData) {
 
     const makeEnum = (str) => {
         const projectArray = str.split(',').filter(project => project !== 'Stichting van het Kind')
-        const lastProject = projectArray.length > 1 ? projectArray.pop() : ''
-        return projectArray.length > 0 ? projectArray.join(', ').concat(' en ', lastProject) : projectArray
+        const lastProject = projectArray.length > 1 ? ' en '.concat(projectArray.pop()) : ''
+        return projectArray.length > 0 ? projectArray.join(', ').concat(lastProject) : projectArray
     }
 
     // console.log(makeEnum(emailData.projects))
