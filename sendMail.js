@@ -55,8 +55,6 @@ async function sendMail(emailData) {
     }
     try {
         const projects = emailData.projects.split(',')
-        console.log(projects.includes('Stichting van het Kind'))
-        console.log(projects.length)
         if (projects.includes('Stichting van het Kind') && projects.length === 1) {
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
@@ -75,10 +73,10 @@ async function sendMail(emailData) {
             console.log('svhk email sent')
         } else if (projects.includes('Stichting van het Kind') && projects.length > 1) {
             const emails = [emailBody, emailBodySVHK]
-            console.log(emails)
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
-                to: "jasonraefon@hotmail.com", // list of receivers
+                // to: ["nino@atlas-sales-agency.nl", "jasonraefon@hotmail.com"], // list of receivers
+                to: "nino@atlas-sales-agency.nl", // list of receivers
                 subject: "Aanvraag werverspas(sen)", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBody, // html body
@@ -92,7 +90,8 @@ async function sendMail(emailData) {
             });
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
-                to: "jasonraefon@hotmail.com", // list of receivers
+                to: "nino@atlas-sales-agency.nl", // list of receivers
+                // to: ["jasonraefon@hotmail.com", "nino@atlas-sales-agency.nl"], // list of receivers
                 subject: "Aanvraag werverspas", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBodySVHK, // html body
@@ -104,6 +103,7 @@ async function sendMail(emailData) {
                     }
                 ] : ''
             });
+            console.log('Emails sent !')
         } else {
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
@@ -119,7 +119,7 @@ async function sendMail(emailData) {
                     }
                 ] : ''
             });
-            console.log('email sent')
+            console.log('Email sent !')
         }
         return 'email sent successfully !'
     } catch (err) {
