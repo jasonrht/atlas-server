@@ -75,8 +75,8 @@ async function sendMail(emailData) {
             const emails = [emailBody, emailBodySVHK]
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
-                // to: ["nino@atlas-sales-agency.nl", "jasonraefon@hotmail.com"], // list of receivers
-                to: "nino@atlas-sales-agency.nl", // list of receivers
+                to: ["nino@atlas-sales-agency.nl", "jasonraefon@hotmail.com"], // list of receivers
+                // to: "nino@atlas-sales-agency.nl", // list of receivers
                 subject: "Aanvraag werverspas(sen)", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBody, // html body
@@ -90,8 +90,8 @@ async function sendMail(emailData) {
             });
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
-                to: "nino@atlas-sales-agency.nl", // list of receivers
-                // to: ["jasonraefon@hotmail.com", "nino@atlas-sales-agency.nl"], // list of receivers
+                // to: "nino@atlas-sales-agency.nl", // list of receivers
+                to: ["jasonraefon@hotmail.com", "nino@atlas-sales-agency.nl"], // list of receivers
                 subject: "Aanvraag werverspas", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBodySVHK, // html body
