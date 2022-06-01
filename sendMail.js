@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 async function sendMail(emailData) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: "smtp-mail.outlook.com",
+        host: "smtp.gmail.com",
         port: 587,
         pool: true,
         secure: false, // true for 465, false for other ports
@@ -42,10 +42,6 @@ async function sendMail(emailData) {
         return projectArray.length > 0 ? projectArray.join(', ').concat(lastProject) : projectArray
     }
 
-    // console.log(makeEnum(emailData.projects))
-
-    // `<p>Beste [Kelly / Trust Marketing],<br/><br/>Graag zou ik namens Atlas Sales Agency [vestiging] aan de [adres] te [plaatsnaam] een gepersonaliseerde werverspas van [project(en)] (dikgedrute weglaten als het om SVHK gaat) willen bestellen voor [werver]. De geboortedatum van [voornaam werver] is [geboortedatum].<br/><br/>Een foto van [voornaam werver] is toegevoegd als bijlage.<br/><br/>Bij voorbaat dank.<br/><br/>Met vriendelijke groet,<br/>Nino Retel Helmrich<br/>Atlas Sales Agency</p>`
-
     const birthdayArray = emailData.birthday.split('-').reverse()
     const emailBirthday = birthdayArray.join('-')
 
@@ -63,9 +59,9 @@ async function sendMail(emailData) {
         console.log(projects.length)
         if (projects.includes('Stichting van het Kind') && projects.length === 1) {
             transporter.sendMail({
-                from: 'jasonraefon@hotmail.com', // sender address
+                from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
                 to: "jasonraefon@hotmail.com", // list of receivers
-                subject: "Hello ✔", // Subject line
+                subject: "Aanvraag werverspas", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBodySVHK, // html body
                 attachments: emailData.photo ? [
@@ -81,9 +77,9 @@ async function sendMail(emailData) {
             const emails = [emailBody, emailBodySVHK]
             console.log(emails)
             transporter.sendMail({
-                from: 'jasonraefon@hotmail.com', // sender address
+                from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
                 to: "jasonraefon@hotmail.com", // list of receivers
-                subject: "Hello ✔", // Subject line
+                subject: "Aanvraag werverspas(sen)", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBody, // html body
                 attachments: emailData.photo ? [
@@ -95,9 +91,9 @@ async function sendMail(emailData) {
                 ] : ''
             });
             transporter.sendMail({
-                from: 'jasonraefon@hotmail.com', // sender address
+                from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
                 to: "jasonraefon@hotmail.com", // list of receivers
-                subject: "Hello ✔", // Subject line
+                subject: "Aanvraag werverspas", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBodySVHK, // html body
                 attachments: emailData.photo ? [
@@ -110,9 +106,9 @@ async function sendMail(emailData) {
             });
         } else {
             transporter.sendMail({
-                from: 'jasonraefon@hotmail.com', // sender address
+                from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
                 to: "jasonraefon@hotmail.com", // list of receivers
-                subject: "Hello ✔", // Subject line
+                subject: "Aanvraag werverspas(sen)", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBody, // html body
                 attachments: emailData.photo ? [
@@ -129,15 +125,6 @@ async function sendMail(emailData) {
     } catch (err) {
         return err
     }
-
-
-
-    // console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
 
 exports.sendMail = (data) => sendMail(data)
