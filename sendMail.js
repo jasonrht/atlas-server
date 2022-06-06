@@ -34,6 +34,11 @@ async function sendMail(emailData) {
             place: 'Utrecht',
             team: 'Utrecht',
         },
+        'apd': {
+            address: 'Socratesstraat 160, 7323 PK',
+            place: 'Apeldoorn',
+            team: 'Apeldoorn',
+        },
     }
 
     const makeEnum = (str) => {

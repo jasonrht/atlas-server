@@ -5,14 +5,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	email: {
+	password: {
 		type: String,
 		required: true
 	},
-    password: {
-        type: String,
-        required: true
-    },
 })
 
 const userModel = mongoose.model("atlasUsers", userSchema)

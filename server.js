@@ -144,7 +144,6 @@ async function main() {
 
                 const user = {
                     username: req.body.username,
-                    email: req.body.email,
                     password: hashedPW,
                 }
                 const newUser = new atlasUser(user)
