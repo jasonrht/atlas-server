@@ -58,7 +58,6 @@ async function main() {
 
         app.get('/scrape-data', async (req, res) => {
             console.time('duration')
-            const testWervers = ['Rosa de Kiefte']
             console.log('Fetching data ...')
             const scrape = await scraping.atlas()
 

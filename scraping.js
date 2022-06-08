@@ -4,10 +4,12 @@ const axios = require('axios')
 const superagent = require('superagent')
 const creds = require('./atlas.json')
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const dfd = require('danfojs-node')
 
 const atlas = async () => {
     const werverDict = await getWervers()
     const werverList = werverDict.map(werver => werver.name)
+    // const werverList = ['Luc van der Vorm', 'Arjan Noordermeer']
     const algemeenData = await login(werverList, 'algemeen')
     const svhkData = await login(werverList, 'svhk')
     const allData = combineData(algemeenData, svhkData)
@@ -25,8 +27,11 @@ const atlas = async () => {
         werver['Uitval'] = (100 * werver['Uitval']).toFixed(2).toString().concat(' %').replace('.', ',')
     })
     // toSpreadsheet(werverDict, allData)
-    console.log(allData)
-    return allData
+    const df = new dfd.DataFrame(allData)
+    df.sortValues('TOB', { inplace: true, ascending: false })
+    df.resetIndex({ inplace: true })
+    df.print()
+    return df
 }
 
 const getWervers = async () => {
@@ -156,7 +161,7 @@ const combineData = (data1, data2) => {
 const loopData = async (list, dict, type, agent) => {
     return Promise.all(list.map(async werver => {
         const id = dict[werver]
-        const month = '05'
+        const month = '06'
         const year = '2022'
         const urls = {
             'algemeen': `https://backstage.atlas-sales-agency.nl/admin/career/bonus/detail?user=${id}&start_month=${month}&start_year=${year}`,
@@ -274,7 +279,7 @@ const getData = async (werverName, page) => {
     for (let i = 0; i < salaris.length; i++) {
         const sal = salaris[i]
         const tot = bedragen[i]
-        if (tot && sal) {
+        if (tot && sal && tot <= 15) {
             factor = sal / tot
             break
         }
@@ -322,5 +327,7 @@ const getData = async (werverName, page) => {
     }
     return allData
 }
+
+// atlas()
 
 exports.atlas = () => atlas()
