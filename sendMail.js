@@ -22,7 +22,7 @@ async function sendMail(emailData) {
         'rtm-hq': {
             address: 'Scheepmakershaven 27b, 3011 VA',
             place: 'Rotterdam',
-            team: 'Rotterdam HQ'
+            team: 'Rotterdam'
         },
         'ams': {
             address: 'Rokin 32-1, 1012 KT',
@@ -38,6 +38,11 @@ async function sendMail(emailData) {
             address: 'Socratesstraat 160, 7323 PK',
             place: 'Apeldoorn',
             team: 'Apeldoorn',
+        },
+        'nmg': {
+            address: 'Hendrikhof 1a, 6511 JA',
+            place: 'Nijmegen',
+            team: 'Nijmegen',
         },
     }
 
