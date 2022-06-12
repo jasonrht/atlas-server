@@ -35,7 +35,7 @@ const atlas = async () => {
 }
 
 const getWervers = async () => {
-    const response = await axios.get('http://localhost:3001/get-wervers')
+    const response = await axios.get('https://atlas-website-backend.herokuapp.com/get-wervers')
     const wervers = response.data.map(werver => {
         return {
             name: werver.name,
