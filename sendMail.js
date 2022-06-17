@@ -68,8 +68,8 @@ async function sendMail(emailData) {
         if (projects.includes('Stichting van het Kind') && projects.length === 1) {
             transporter.sendMail({
                 from: 'faciliteiten.atlasssalesagency@gmail.com', // sender address
-                to: 'jasonraefon@hotmail.com', // list of receivers
-                // to: 'kelly@stichtingvanhetkind.nl', // list of receivers
+                // to: 'jasonraefon@hotmail.com', // list of receivers
+                to: 'kelly@stichtingvanhetkind.nl', // list of receivers
                 subject: "Aanvraag werverspas", // Subject line
                 // text: "Hello world?", // plain text body
                 html: emailBodySVHK, // html body
