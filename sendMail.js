@@ -13,7 +13,7 @@ async function sendMail(emailData) {
         secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.EMAIL, // generated ethereal user
-            pass: process.env.EMAIL_PW, // generated ethereal password
+            pass: process.env.EMAIL_KEY, // generated ethereal password
         },
         maxConnections: 1,
     });
