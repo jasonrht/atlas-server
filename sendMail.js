@@ -30,7 +30,7 @@ async function sendMail(emailData) {
             team: 'Amsterdam',
         },
         'utr': {
-            address: 'Sint Jacobsstraat 205, 3511 BT',
+            address: 'Sint Jacobsstraat 205, 3511 BP',
             place: 'Utrecht',
             team: 'Utrecht',
         },
