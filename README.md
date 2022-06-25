@@ -1,4 +1,4 @@
-# Atlas Backend Server
+# Sales Agency Employee Portal Backend Server
 
 This is a repository that contains the files for the backend server of the atlas-website repository, which you can find here: 
 http://github.com/jasonrht/atlas-website
